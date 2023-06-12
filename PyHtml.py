@@ -1,5 +1,7 @@
 class PyHtml:
-    def __init__(self,lang,title):
+    def __init__(self):
+        pass
+    def SetHtml(self,lang,title):
         """
             Set the name, language and title of the website file of the website.
             
@@ -32,9 +34,10 @@ class PyHtml:
             f.write(self.html1)
             
     def UpdateHtml(self):
-        self.html=self.head+self.body.insert(1,self.tags)
+        self.html = self.head + self.body[:1] + self.tags + self.body[1:]
+
     
-    def SetScript(self,script):
+    def SetJavaScript(self,script):
         """Set JavaScript (or TypeScript) to use for your website"""
         self.body.insert(1, '\t\t<script src="{}"></script>'.format(script))
         self.UpdateHtml()
@@ -43,7 +46,15 @@ class PyHtml:
         """Set Css to use for your website"""
         self.head.insert(5,'\t\t<link rel="stylesheet" type="text/css" href="{}">'.format(stylesheets))
         self.UpdateHtml()
-    def AddTag(self,name,value,attributes):
+        
+    def SetPyScript(self):
+        """Set PyScript to use for your website"""
+        self.head.insert(3,'\t\t<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />')
+        self.head.insert(4,'\t\t<script defer src="https://pyscript.net/latest/pyscript.js"></script>')
+        
+      
+    
+    def AddTag(self, name, value, attributes):
         """
         Ability to create a tag by entering the name and attributes of the tag
 
@@ -52,10 +63,9 @@ class PyHtml:
         attributes: Get attribute names and values as dictionary values.
         """
         attribute_string = ""
-        for key, value in attributes.items():
-            attribute_string += f' {key}="{value}"'
-        
-        html_tag = f"<{name}{attribute_string}></{name}>"
+        for key, val in attributes.items():
+            attribute_string += f' {key}="{val}"'
+
+        html_tag = f"        <{name}{attribute_string}>{value}</{name}>"
         self.tags.append(html_tag)
         self.UpdateHtml()
-
